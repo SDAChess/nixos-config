@@ -25,22 +25,30 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.sda = import ./home;
+          home-manager.verbose = true;
         };
       };
-      nixosConfigurations = {
+
+      nixosConfigurations = 
+      let 
+        sharedModules = 
+        [
+          home-manager.nixosModule
+        ]
+        ++ (nixpkgs.lib.attrValues self.nixosModules);
+      in
+      {
         thompson = lib.nixosSystem {
           inherit system pkgs;
           modules = [ 
             ./thompson
-            home-manager.nixosModule 
-          ];
+          ] ++ sharedModules; 
         };
         stroustrup = lib.nixosSystem {
           inherit system pkgs;
           modules = [ 
-            ./stroupstrup
-            home-manager.nixosModule 
-          ];
+            ./stroustrup
+          ] ++ sharedModules;
         };
       };
     };
