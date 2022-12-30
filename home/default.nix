@@ -77,12 +77,6 @@ in
           };
 
           trayOutput = "primary";
-
-          # disable mouse scroll wheel in bar
-          extraConfig = ''
-            bindsym button4 nop
-            bindsym button5 nop
-          '';
         }
       ];
       startup = [
