@@ -20,17 +20,26 @@
       };
       lib = nixpkgs.lib;
     in {
+      nixosModules = {
+        home = {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.sda = import ./home;
+        };
+      };
       nixosConfigurations = {
+        thompson = lib.nixosSystem {
+          inherit system pkgs;
+          modules = [ 
+            ./thompson
+            home-manager.nixosModule 
+          ];
+        };
         stroustrup = lib.nixosSystem {
           inherit system pkgs;
           modules = [ 
-            ./stroustrup.nix 
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.sda = import ./home.nix;
-            }
+            ./stroupstrup
+            home-manager.nixosModule 
           ];
         };
       };
