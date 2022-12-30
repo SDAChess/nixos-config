@@ -2,6 +2,7 @@
 let
    username = "sda";
    mod = "Mod4";
+   wallpaper = ./wallpaper.png;
 in
 {
   home = {
@@ -21,6 +22,13 @@ in
     config = {
       modifier = mod;
       terminal = "${pkgs.alacritty}/bin/alacritty";
+      startup = [
+        {
+          command = "${pkgs.feh}/bin/feh --bg-scale ${wallpaper}";
+          always = true;
+          notification = false;
+        }
+      ];
     };
   };
 
