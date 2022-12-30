@@ -11,7 +11,7 @@ in
     homeDirectory = "/home/${username}";
     packages = with pkgs; [
       gnupg alacritty gcc discord spotify
-      pavucontrol binutils spectacle 
+      pavucontrol binutils spectacle ripgrep
       feh unzip htop rustup neofetch clang-tools
       python311 teams evince slack
     ];
