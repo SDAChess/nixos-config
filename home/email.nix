@@ -115,7 +115,7 @@ in {
         realName = name;
         aliases = [ "sda@prologin.org" ];
         flavor = "plain"; # default setting
-        passwordCommand = "echo ***REMOVED***";
+        passwordCommand = "${pkgs.rbw}/bin/rbw get email_prologin";
         primary = false;
         mbsync = {
           enable = true;
