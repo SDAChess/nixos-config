@@ -5,47 +5,41 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "stroustrup"; # Define your hostname.
+  networking.hostName = "thompson"; # Define your hostname.
   # Pick only one of the below networking options.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable =
+    true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
- 
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
-
   console = {
-     font = "Lat2-Terminus16";
-     keyMap = "fr";
+    font = "Lat2-Terminus16";
+    keyMap = "fr";
   };
 
   programs.dconf.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver = {
-    enable = true;   
+    enable = true;
 
     windowManager.i3 = {
       enable = true;
-      extraPackages = with pkgs; [
-        dmenu
-        i3lock
-      ]; 
+      extraPackages = with pkgs; [ dmenu i3lock ];
     };
 
     layout = "fr";
@@ -69,15 +63,11 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim 
-    wget
-    git
-  ];
+  environment.systemPackages = with pkgs; [ vim wget git ];
 
   programs.gnupg.agent = {
-     enable = true;
-     enableSSHSupport = true;
+    enable = true;
+    enableSSHSupport = true;
   };
 
   fonts.fonts = with pkgs; [
@@ -91,6 +81,7 @@
   ];
 
   virtualisation.docker.enable = true;
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -98,6 +89,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.11"; # Did you read the comment?
-
 }
-
