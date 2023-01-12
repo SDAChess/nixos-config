@@ -40,6 +40,12 @@ in {
       reader-port Yubico
     '';
 
+    programs.zsh.initExtra = ''
+      if [[ -z "$SSH_AUTH_SOCK" ]]; then
+        export SSH_AUTH_SOCK="$(${pkgs.gnupg}/bin/gpgconf --list-dirs agent-ssh-socket)"
+      fi
+    '';
+
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
   };
