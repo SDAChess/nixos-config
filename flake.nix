@@ -2,50 +2,35 @@
   description = "My system configuration flake.";
 
   inputs = {
-    nixpkgs = { url = "github:nixos/nixpkgs/nixos-22.11"; };
+    nixpkgs = { url = "github:nixos/nixpkgs/nixos-unstable"; };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixgl.url = "github:guibou/nixGL";
     darwin = {
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin }: {
+  outputs = { self, nixpkgs, home-manager, darwin, nixgl }: {
 
     nixosConfigurations = let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        overlays = [ nixgl.overlay ];
       };
       lib = nixpkgs.lib;
     in {
-      thompson = lib.nixosSystem {
+      stroustrup = lib.nixosSystem {
         inherit system pkgs;
         modules = [
-          ./hosts/thompson
+          ./hosts/stroustrup
           home-manager.nixosModules.home-manager
-          ./thompson.nix
-        ];
-      };
-    };
-
-    darwinConfigurations = let
-      system = "aarch64-darwin";
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-    in {
-      wozniak = darwin.lib.darwinSystem {
-        inherit system pkgs;
-        modules = [
-          ./hosts/wozniak
-          home-manager.darwinModules.home-manager
-          ./wozniak.nix
+          ./stroustrup.nix
         ];
       };
     };

@@ -5,7 +5,7 @@
     settings = {
       font = {
         normal.family = "Fira Code Nerd Font";
-        size = 12.0;
+        size = 9.0;
       };
     };
   };

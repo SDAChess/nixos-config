@@ -4,66 +4,63 @@ let
   wallpaper = ./wallpaper.png;
 in
 {
-  programs.i3status-rust = {
-    enable = true;
-    bars = {
-      bottom = {
-        blocks = [
-          {
-            block = "disk_space";
-            path = "/";
-            alias = "/";
-            info_type = "available";
-            unit = "GB";
-            interval = 60;
-            warning = 20.0;
-            alert = 10.0;
-          }
-          {
-            block = "memory";
-            display_type = "memory";
-            format_mem = "{mem_used_percents}";
-            format_swap = "{swap_used_percents}";
-          }
-          {
-            block = "cpu";
-            interval = 1;
-          }
-          {
-            block = "load";
-            interval = 1;
-            format = "{1m}";
-          }
-          { block = "sound"; }
-          {
-            block = "time";
-            interval = 60;
-            format = "%a %d/%m %R";
-          }
-        ];
-      };
-    };
-  };
-
   xsession.windowManager.i3 = {
     enable = true;
     config = {
       modifier = Mod;
       terminal = "${pkgs.alacritty}/bin/alacritty";
-      bars = let
-        barConfigPath =
-          config.xdg.configFile."i3status-rust/config-bottom.toml".target;
-      in [{
-        statusCommand =
-          "${pkgs.i3status-rust}/bin/i3status-rs ${barConfigPath}";
-        position = "bottom";
-        fonts = {
-          names = [ "FiraCode Nerd Font" "FontAwesome6Free" ];
-          size = 9.0;
-        };
-
-        trayOutput = "primary";
-      }];
+      keybindings = lib.mkOptionDefault {
+       	"${Mod}+Ctrl+L" = "exec --no-startup-id ${pkgs.betterlockscreen}/bin/betterlockscreen -l";
+      };
+      fonts = {
+        names = [ "monospace" ];
+        size = 12.0;
+      };
+      bars = [
+        {
+          mode = "dock";
+          hiddenState = "hide";
+          position = "bottom";
+          workspaceButtons = true;
+          workspaceNumbers = true;
+          statusCommand = "${pkgs.i3status}/bin/i3status";
+          trayOutput = "primary";
+          colors = {
+            background = "#000000";
+            statusline = "#ffffff";
+            separator = "#666666";
+            focusedWorkspace = {
+              border = "#4c7899";
+              background = "#285577";
+              text = "#ffffff";
+            };
+            activeWorkspace = {
+              border = "#333333";
+              background = "#5f676a";
+              text = "#ffffff";
+            };
+            inactiveWorkspace = {
+              border = "#333333";
+              background = "#222222";
+              text = "#888888";
+            };
+            urgentWorkspace = {
+              border = "#2f343a";
+              background = "#900000";
+              text = "#ffffff";
+            };
+            bindingMode = {
+              border = "#2f343a";
+              background = "#900000";
+              text = "#ffffff";
+            };
+          };
+          fonts = {
+            names = [ "monospace" ];
+            size = 12.0;
+          };
+        }
+      ];
       startup = [{
         command = "${pkgs.feh}/bin/feh --bg-scale ${wallpaper}";
         always = true;
