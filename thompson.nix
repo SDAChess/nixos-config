@@ -8,27 +8,23 @@ in {
       ./home/alacritty.nix
       ./home/direnv.nix
       ./home/emacs.nix
-      ./home/email.nix
       ./home/git.nix
-      ./home/gtk.nix
       ./home/i3.nix
-      ./home/rbw.nix
       ./home/services.nix
       ./home/zsh.nix
     ];
 
     home = {
-      stateVersion = "22.11";
+      stateVersion = "23.11";
       username = username;
       homeDirectory = "/home/${username}";
       packages = with pkgs; [
         gnupg
         alacritty
-        gcc
+        google-chrome
         discord
         spotify
         pavucontrol
-        binutils
         spectacle
         ripgrep
         feh
@@ -38,9 +34,7 @@ in {
         neofetch
         clang-tools
         python311
-        teams
         evince
-        slack
         nixfmt
       ];
     };
